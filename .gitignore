@@ -71,3 +71,8 @@ crashlytics-build.properties
 
 #Mac generated files
 *.DS_Store
+
+#Stopping to ignore any assets inside Plugins folders
+!/[Aa]ssets/[Pp]lugins/**
+!/[Aa]ssets/[Ii]nternal/[Pp]lugins/**
+!/[Aa]ssets/[Ee]xternal/[Pp]lugins/**
