@@ -135,14 +135,16 @@ public class Region : object{
 			// Makes the zIndex worth
 			float r = radius - 0.001f * zIndex;
 
-			// TODO - fazer checagem de valores?
-			// TODO - um transform que corresponda aos parâmetros
-
+			// Acquires the screen center position
 			Vector3 pos = PolarCartesiano(r,polar,azimuthal);
+
+			// Calculates the scale in such a way the FOV area taken independs on the distance
 			Vector3 scl = new Vector3(
-				10 * Vector3.Distance(pos,PolarCartesiano(r,polar,azimuthal+width)),
-				10 * Vector3.Distance(pos,PolarCartesiano(r,polar+height,azimuthal)),
-				1);
+
+				Vector3.Distance(pos,PolarCartesiano(r,polar,azimuthal+width)) * 1.4142f,	// Essa constante só deve funcionar na câmera default do editor
+				Vector3.Distance(pos,PolarCartesiano(r,polar+height,azimuthal)) * 1.4142f,	// Essa constante deve ser testada no Óculus
+				1
+			);
 
 			Debug.Log("Encontrei uma region!\nPosition: " + pos + "\nScale: " + scl);
 

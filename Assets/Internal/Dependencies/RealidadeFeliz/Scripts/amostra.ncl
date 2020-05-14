@@ -1,7 +1,7 @@
 <ncl id="realidade_feliz">
 	<head>
 		<regionBase>
-			<region id="regiao_popup" polar="90deg" azimuthal="180deg" width="100deg" height="100deg" zIndex="1"/>
+			<region id="regiao_popup" polar="90deg" azimuthal="0deg" width="90deg" height="90deg" radius="255" zIndex="1"/>
 			<region id="regiao_total"/>
 		</regionBase>
 	</head>
