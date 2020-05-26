@@ -29,19 +29,26 @@ public class Region : object{
 		}
 	}
 
+	private Region.Transform _trans = null;
 	public string id { get; private set; }
-	private Region.Transform _trans;
 
 	// Returns null in case it's a 360º area
 	public Region.Transform trans{
 
-		get{ return this._trans == null ? null : new Region.Transform(this._trans); }
-		private set{ this._trans = value; }
+		get{
+
+			return this._trans == null ? null : new Region.Transform(this._trans);
+		}
+
+		private set{
+
+			this._trans = value;
+		}
 	}
 
 	public bool IsTotal(){
 
-		return this.trans == null;
+		return this._trans == null;
 	}
 
 	public Region( XmlNode node){
@@ -154,8 +161,6 @@ public class Region : object{
 				Vector3.Distance(pos,PolarCartesiano(r,polar+height,azimuthal)) * 1.4142f,	// Essa constante deve ser testada no Óculus
 				1
 			);
-
-			Debug.Log("Encontrei uma region!\nPosition: " + pos + "\nScale: " + scl);
 
 			this.trans = new Region.Transform(pos,scl);
 

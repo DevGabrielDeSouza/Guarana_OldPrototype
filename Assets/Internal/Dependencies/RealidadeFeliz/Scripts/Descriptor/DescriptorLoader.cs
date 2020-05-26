@@ -31,11 +31,11 @@ public class DescriptorLoader : object{
 
 		}catch( Exception e){
 
-			Debug.Log("NCL file could not be read");
+			Debug.Log("NCL file could not be read: " + e);
 			// TODO - quit application with log
 		}
 
-		Debug.Log("Arquivo NCL foi lido com sucesso!"); // ######## DEGUB ########
+//		Debug.Log("Arquivo NCL foi lido com sucesso!"); // ######## DEGUB ########
 
 		try{
 
@@ -51,7 +51,7 @@ public class DescriptorLoader : object{
 			// TODO - quit application with log
 		}
 
-		Debug.Log("Li todos as tags 'region'");
+//		Debug.Log("Li todos as tags 'region'");
 
 		try{
 
@@ -67,6 +67,6 @@ public class DescriptorLoader : object{
 			// TODO - quit application with log
 		}
 
-		Debug.Log("Li todos as tags 'media'");
+//		Debug.Log("Li todos as tags 'media'");
 	}
 }

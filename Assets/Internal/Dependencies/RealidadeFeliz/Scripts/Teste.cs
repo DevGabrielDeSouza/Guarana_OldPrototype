@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.Assertions;
 using UnityEngine;
+using TMPro;
 
 using System.Collections.Generic;
 using System.Collections;
@@ -11,14 +12,19 @@ using System;
 
 public class Teste : MonoBehaviour{
 
+	public TextMeshPro debug { get; private set; }	// Text debug canvas
+
 	[SerializeField]
-	private GameObject _Tela_ = null;	// Prefab da Tela
+	private GameObject _Tela_ = null;		// Screen's Prefab
 
 	// Temporary directory path
 	private string TMP_PATH;
 
 	// Start is called before the first frame update
 	void Start(){
+
+		// Get the debugging object
+		this.debug = GameObject.Find("/Text (TMP)").GetComponent<TextMeshPro>();
 
 		// Executa a função principal
 		this.StartCoroutine(this.AssyncMain());
@@ -43,6 +49,7 @@ public class Teste : MonoBehaviour{
 
 		Assert.IsTrue(Directory.Exists(this.TMP_PATH));
 		Assert.IsNotNull(this._Tela_);
+		Assert.IsNotNull(this.debug);
 
 		// ################################################################
 		// Lê o doc NCL
@@ -66,7 +73,7 @@ public class Teste : MonoBehaviour{
 				string fileName = Path.GetFileName(kvp.Value.src);
 				string URL = string.Format("{0}/{1}",@"http://happyserver.lan/shared",fileName);
 
-				yield return this.StartCoroutine(DownloadURL(URL));
+				yield return DownloadURL(URL,string.Format("{0}/{1}",this.TMP_PATH,fileName));
 			}
 		}
 
@@ -103,28 +110,22 @@ public class Teste : MonoBehaviour{
 		}
 	}
 
-	private IEnumerator DownloadURL( string url){
+	private IEnumerator DownloadURL( string url, string fileName){
 
 		Assert.IsTrue(url.Contains(@"/"));
 
-		using ( UnityWebRequest www = UnityWebRequest.Get(url) ){
+		using( UnityWebRequest www = UnityWebRequest.Get(url) ){
 
 			yield return www.SendWebRequest();
 
 			if( www.isNetworkError || www.isHttpError )
-				Debug.Log(www.error);
+				this.debug.text += "\n" + www.error;
 
 			else{
 
-				string file_name = url.Substring(url.LastIndexOf(@"/"));
-				file_name = file_name.Contains(@"?") ? file_name.Substring(0,file_name.LastIndexOf(@"?")+1) : file_name;
+				Assert.IsFalse(string.IsNullOrEmpty(fileName));
 
-				Assert.IsFalse(string.IsNullOrEmpty(file_name));
-				Assert.IsTrue(Directory.Exists(TMP_PATH));
-
-				string savingPath = string.Format("{0}/{1}",TMP_PATH,file_name);
-
-				BinaryWriter writer = new BinaryWriter(File.Open(savingPath, FileMode.Create));
+				BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create));
 				writer.Write(www.downloadHandler.data);
             }
 		}
