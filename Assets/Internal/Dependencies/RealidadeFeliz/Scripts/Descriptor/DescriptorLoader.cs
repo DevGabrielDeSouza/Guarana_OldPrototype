@@ -12,11 +12,13 @@ using System;
 public class DescriptorLoader : object{
 
 	// NCL nodes as Dict<id,class>
-	public Dictionary<string,Region> region = new Dictionary<string,Region>();
-	public Dictionary<string,Media> media = new Dictionary<string,Media>();
+	public Dictionary<string,Region> region { get; private set; }
+	public Dictionary<string,Media> media { get; private set; }
 
-	// Start is called before the first frame update
-	public void Load(){
+	public DescriptorLoader( string docLocation, string TMP_PATH){
+
+		this.region = new Dictionary<string,Region>();
+		this.media = new Dictionary<string,Media>();
 
 		// ################################
 		// Primeiro lê-se o NCL
@@ -25,7 +27,7 @@ public class DescriptorLoader : object{
 
 		try{
 
-			ncl.Load(Application.dataPath + "/Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl");
+			ncl.Load(docLocation);
 
 		}catch( Exception e){
 
@@ -40,7 +42,7 @@ public class DescriptorLoader : object{
 			foreach( XmlNode regionNode in ncl.GetElementsByTagName("region")){
 
 				var aux = new Region(regionNode);
-				this.region.Add(aux.GetID(),aux);
+				this.region.Add(aux.id,aux);
 			}
 
 		}catch( Exception e){
@@ -55,8 +57,8 @@ public class DescriptorLoader : object{
 
 			foreach( XmlNode mediaNode in ncl.GetElementsByTagName("media")){
 
-				var aux = new Media(mediaNode,this.region);
-				this.media.Add(aux.GetID(),aux);
+				var aux = new Media(mediaNode,this.region,TMP_PATH);
+				this.media.Add(aux.id,aux);
 			}
 
 		}catch( Exception e){

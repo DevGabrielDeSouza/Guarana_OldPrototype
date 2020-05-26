@@ -9,9 +9,6 @@ public class Region : object{
 	private static readonly float MAXIMUM_HEIGHT = 120.0f;
 	private static readonly float MAXIMUM_WIDTH = 120.0f;
 
-//<region id="regiao_total" width="100%" height="100%" zIndex="1"/>
-//<region id="regiao_popup" polar="30deg" azimuthal="45deg" width="10deg" height="10deg" zIndex="2"/>
-
 	public sealed class Transform{
 
 		public Vector3 position;
@@ -32,8 +29,19 @@ public class Region : object{
 		}
 	}
 
-	private Region.Transform trans = null;
-	private string id = null;
+	// Returns null in case it's a 360º area
+	public Region.Transform trans {
+
+		get{ return this.trans == null ? null : new Region.Transform(this.trans); }
+		private set{ trans = value; }
+	}
+
+	public string id { get; private set; }
+
+	public bool IsTotal(){
+
+		return this.trans == null;
+	}
 
 	public Region( XmlNode node){
 
@@ -157,7 +165,7 @@ public class Region : object{
 		}
 	}
 
-	public static Vector3 PolarCartesiano( float radius, float polar, float azimuthal){
+	private static Vector3 PolarCartesiano( float radius, float polar, float azimuthal){
 
 		float y = radius * Mathf.Sin((90-polar)*Mathf.PI/180);
 		float H = radius * Mathf.Cos((90-polar)*Mathf.PI/180);
@@ -166,16 +174,5 @@ public class Region : object{
 		float z = H * Mathf.Cos(azimuthal*Mathf.PI/180);
 
 		return new Vector3(x,y,z);
-	}
-
-	// Returns null in case it's a 360º area
-	public Region.Transform GetTransform(){
-
-		return this.trans != null ? new Region.Transform(this.trans) : null;
-	}
-
-	public string GetID(){
-
-		return this.id;
 	}
 }
