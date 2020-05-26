@@ -29,14 +29,15 @@ public class Region : object{
 		}
 	}
 
-	// Returns null in case it's a 360º area
-	public Region.Transform trans {
-
-		get{ return this.trans == null ? null : new Region.Transform(this.trans); }
-		private set{ trans = value; }
-	}
-
 	public string id { get; private set; }
+	private Region.Transform _trans;
+
+	// Returns null in case it's a 360º area
+	public Region.Transform trans{
+
+		get{ return this._trans == null ? null : new Region.Transform(this._trans); }
+		private set{ this._trans = value; }
+	}
 
 	public bool IsTotal(){
 

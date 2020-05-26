@@ -31,7 +31,7 @@ public class Teste : MonoBehaviour{
 		// Create an empty download directory to serve as cache
 
 		//this.TMP_PATH = string.Format("{0}/{1}",Application.persistentDataPath,"tmp_media");
-		this.TMP_PATH = string.Format("file:///{0}/{1}",Application.temporaryCachePath,"tmp_media");
+		this.TMP_PATH = Path.Combine(Application.temporaryCachePath,"tmp_media");
 
 		if( Directory.Exists(this.TMP_PATH) )
 			Directory.Delete(this.TMP_PATH,true);
@@ -50,7 +50,7 @@ public class Teste : MonoBehaviour{
 		var parsedNCL = new DescriptorLoader(
 
 			string.Format("file:///{0}/{1}",Application.dataPath,"/Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl"),
-			this.TMP_PATH
+			string.Format("file:///{0}",this.TMP_PATH)
 		);
 
 		// ################################################################
@@ -63,7 +63,7 @@ public class Teste : MonoBehaviour{
 			// Temporariamente não queremos testar vídeos 360
 			if( reg != null && !reg.IsTotal() ){
 
-				string fileName = kvp.Value.src.Substring(kvp.Value.src.LastIndexOf(@"/"));
+				string fileName = Path.GetFileName(kvp.Value.src);
 				string URL = string.Format("{0}/{1}",@"http://happyserver.lan/shared",fileName);
 
 				yield return this.StartCoroutine(DownloadURL(URL));
@@ -95,6 +95,7 @@ public class Teste : MonoBehaviour{
 
 				//tela.SetVideoURL(@"\\localhost\B$\temp\junk_Matheus\Assets\Storage\Videos\evangelion.mp4");
 				//tela.SetVideoURL(@"\\happyserver.lan\shared\evangelion.mp4");
+
 				tela.SetVideoURL(kvp.Value.src);
 				tela.SetResolution(720,480);
 				tela.LookAtOrigin();
