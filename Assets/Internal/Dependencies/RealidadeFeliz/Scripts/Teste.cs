@@ -81,8 +81,12 @@ this.debug.text += "\n\t02";
 
 			Region reg = kvp.Value.defaultReg;
 
+this.debug.text += "\n\tEm foreach 01: 00";
+
 			// Temporariamente não queremos testar vídeos 360
 			if( reg != null && !reg.IsTotal() ){
+
+this.debug.text += "\n\tEm foreach 01: 01";
 
 				string fileName = Path.GetFileName(kvp.Value.src);
 				string URL = string.Format("{0}/{1}",@"http://happyserver.lan/shared",fileName);
@@ -100,8 +104,12 @@ this.debug.text += "\n\t03";
 
 			Region reg = kvp.Value.defaultReg;
 
+this.debug.text += "\n\tEm foreach 02: 00";
+
 			// Temporariamente não queremos testar vídeos 360
 			if( reg != null && !reg.IsTotal() ){
+
+this.debug.text += "\n\tEm foreach 02: 01";
 
 				// ################################
 				// Cria uma tela para exibí-la
