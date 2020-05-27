@@ -11,6 +11,8 @@ using System.IO;
 using System;
 
 public class Teste : MonoBehaviour{
+	[SerializeField]
+	private TextAsset textAsset;
 
 	public TextMeshPro debug { get; private set; }	// Text debug canvas
 
@@ -60,15 +62,23 @@ this.debug.text += "\n\t00";
 		Assert.IsTrue(Directory.Exists(this.TMP_PATH));
 		Assert.IsNotNull(this._Tela_);
 		Assert.IsNotNull(this.debug);
+		Assert.IsNotNull(textAsset);
 
-this.debug.text += "\n\t01";
+		this.debug.text += "\n\t01";
 
 		// ################################################################
 		// Lê o doc NCL
 
+
+
+		//this.debug.text += "\n\t Resources: " + (TextAsset)Resources.Load("amostra");
+
 		var parsedNCL = new DescriptorLoader(
 
-			string.Format("file:///{0}/{1}",Application.dataPath,"/Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl"),
+			//(TextAsset)Resources.Load<TextAsset>("amostra.xml"),
+			textAsset,
+
+		//string.Format("file:///{0}/{1}",Application.dataPath,"Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl"),
 			string.Format("file:///{0}",this.TMP_PATH),
 			this.debug
 		);
@@ -130,10 +140,15 @@ this.debug.text += "\n\tEm foreach 02: 01";
 
 				try{
 
-					if( File.Exists(kvp.Value.src) )
-						tela.SetVideoURL(kvp.Value.src);
-
-					this.debug.text += "\nSoube do arquivo";
+					if (File.Exists(kvp.Value.src.Substring(8)))
+					{
+						tela.SetVideoURL(kvp.Value.src.Substring(8));
+						this.debug.text += "\n\t Achei o arquivo" + kvp.Value.src + " !! =D";
+					}
+					else
+					{
+						this.debug.text += "\n\t Não achei o arquivo" + kvp.Value.src + " !! ='(";
+					}
 
 				}catch( Exception e){
 
@@ -162,6 +177,9 @@ this.debug.text += "\n\t04";
 				this.debug.text += "\n" + www.error;
 				yield break;
 			}
+
+
+			this.debug.text += "\n\t Fiz Download do " + fileName;
 
 			Assert.IsFalse(string.IsNullOrEmpty(fileName));
 

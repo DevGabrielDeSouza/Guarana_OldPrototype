@@ -16,7 +16,7 @@ public class DescriptorLoader : object{
 	public Dictionary<string,Region> region { get; private set; }
 	public Dictionary<string,Media> media { get; private set; }
 
-	public DescriptorLoader( string docLocation, string TMP_PATH, TextMeshPro debug){
+	public DescriptorLoader(TextAsset docLocation, string TMP_PATH, TextMeshPro debug){
 
 		this.region = new Dictionary<string,Region>();
 		this.media = new Dictionary<string,Media>();
@@ -30,7 +30,12 @@ debug.text += "\n\tDescLoader - 01";
 
 		try{
 
-			ncl.Load(docLocation);
+			if (docLocation == null)
+			{
+				debug.text += "\n\tdocLocation eh nulo!!! ";
+			}
+
+			ncl.LoadXml(docLocation.text);
 
 debug.text += "\n\tDescLoader - 02";
 

@@ -318,7 +318,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -38.39084, y: 0, z: -40.304276, w: -28.7396}
+  m_margin: {x: -148.55708, y: -106.184845, z: -155.34819, w: -51.25762}
   m_textInfo:
     textComponent: {fileID: 539227375}
     characterCount: 10
@@ -407,15 +407,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 539227374}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.71}
-  m_LocalScale: {x: 0.10446374, y: 0.10446374, z: 0.10446374}
+  m_LocalPosition: {x: 0, y: 0, z: 2.83}
+  m_LocalScale: {x: 0.027566792, y: 0.027566792, z: 0.027566792}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.031607, y: 3.16}
+  m_AnchoredPosition: {x: -0.081032, y: 1.67}
   m_SizeDelta: {x: 45, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &646792542
@@ -792,6 +792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7d5eb5b0b2ffe47a4c6ae207645a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textAsset: {fileID: 4900000, guid: 737ac7ecc88304d4e95154a184d09a85, type: 3}
   _Tela_: {fileID: 8622696690152403363, guid: 29a3f77cd2dd384478b776d6f442f72a, type: 3}
 --- !u!1 &963194225
 GameObject:
