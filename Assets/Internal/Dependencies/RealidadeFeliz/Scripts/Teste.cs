@@ -69,7 +69,8 @@ this.debug.text += "\n\t01";
 		var parsedNCL = new DescriptorLoader(
 
 			string.Format("file:///{0}/{1}",Application.dataPath,"/Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl"),
-			string.Format("file:///{0}",this.TMP_PATH)
+			string.Format("file:///{0}",this.TMP_PATH),
+			this.debug
 		);
 
 this.debug.text += "\n\t02";
