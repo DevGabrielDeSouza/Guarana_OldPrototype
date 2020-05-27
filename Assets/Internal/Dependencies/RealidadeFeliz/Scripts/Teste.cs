@@ -39,10 +39,20 @@ public class Teste : MonoBehaviour{
 		//this.TMP_PATH = string.Format("{0}/{1}",Application.persistentDataPath,"tmp_media");
 		this.TMP_PATH = Path.Combine(Application.temporaryCachePath,"tmp_media");
 
-		if( Directory.Exists(this.TMP_PATH) )
-			Directory.Delete(this.TMP_PATH,true);
+		try{
 
-		Directory.CreateDirectory(this.TMP_PATH);
+			if( Directory.Exists(this.TMP_PATH) )
+				Directory.Delete(this.TMP_PATH,true);
+
+			Directory.CreateDirectory(this.TMP_PATH);
+
+		}catch( Exception e){
+
+			this.debug.text += "\nErro para saber se o directory existe?\n" + e;
+			yield break;
+		}
+
+this.debug.text += "\n\t00";
 
 		// ################################################################
 		// Makes initialization assertions
@@ -50,6 +60,8 @@ public class Teste : MonoBehaviour{
 		Assert.IsTrue(Directory.Exists(this.TMP_PATH));
 		Assert.IsNotNull(this._Tela_);
 		Assert.IsNotNull(this.debug);
+
+this.debug.text += "\n\t01";
 
 		// ################################################################
 		// Lê o doc NCL
@@ -59,6 +71,8 @@ public class Teste : MonoBehaviour{
 			string.Format("file:///{0}/{1}",Application.dataPath,"/Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl"),
 			string.Format("file:///{0}",this.TMP_PATH)
 		);
+
+this.debug.text += "\n\t02";
 
 		// ################################################################
 		// Faz download das médias
@@ -76,6 +90,8 @@ public class Teste : MonoBehaviour{
 				yield return DownloadURL(URL,string.Format("{0}/{1}",this.TMP_PATH,fileName));
 			}
 		}
+
+this.debug.text += "\n\t03";
 
 		// ################################################################
 		// Cria as telas para exibir as mídias
@@ -103,11 +119,25 @@ public class Teste : MonoBehaviour{
 				//tela.SetVideoURL(@"\\localhost\B$\temp\junk_Matheus\Assets\Storage\Videos\evangelion.mp4");
 				//tela.SetVideoURL(@"\\happyserver.lan\shared\evangelion.mp4");
 
-				tela.SetVideoURL(kvp.Value.src);
+				try{
+
+					if( File.Exists(kvp.Value.src) )
+						tela.SetVideoURL(kvp.Value.src);
+
+					this.debug.text += "\nSoube do arquivo";
+
+				}catch( Exception e){
+
+					this.debug.text += "\nErro para saber se o arquivo existe? " + e;
+					yield break;
+				}
+
 				tela.SetResolution(720,480);
 				tela.LookAtOrigin();
 			}
 		}
+
+this.debug.text += "\n\t04";
 	}
 
 	private IEnumerator DownloadURL( string url, string fileName){
@@ -118,16 +148,16 @@ public class Teste : MonoBehaviour{
 
 			yield return www.SendWebRequest();
 
-			if( www.isNetworkError || www.isHttpError )
+			if( www.isNetworkError || www.isHttpError ){
+
 				this.debug.text += "\n" + www.error;
+				yield break;
+			}
 
-			else{
+			Assert.IsFalse(string.IsNullOrEmpty(fileName));
 
-				Assert.IsFalse(string.IsNullOrEmpty(fileName));
-
-				BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create));
-				writer.Write(www.downloadHandler.data);
-            }
+			BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create));
+			writer.Write(www.downloadHandler.data);
 		}
 	}
 
