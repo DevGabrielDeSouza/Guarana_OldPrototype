@@ -143,7 +143,7 @@ this.debug.text += "\n\tEm foreach 02: 01";
 					if (File.Exists(kvp.Value.src.Substring(8)))
 					{
 						tela.SetVideoURL(kvp.Value.src);
-						//tela.SetVideoURL("http://happyserver.lan/shared/evangelion.mp4");
+						//tela.SetVideoURL("http://happyserver.lan/shared/eggman.mp4");
 						this.debug.text += "\n\t Achei o arquivo" + kvp.Value.src + " !! =D";
 					}
 					else
