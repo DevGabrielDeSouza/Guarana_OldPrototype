@@ -7,6 +7,6 @@
 	</head>
 	<body>
 		<media id="om_nom" src="om_nom.mp4" region="regiao_total"/>
-		<media id="kirby" src="kirby.mp4" region="regiao_popup"/>
+		<media id="kirby" src="evangelion.mp4" region="regiao_popup"/>
 	</body>
 </ncl>

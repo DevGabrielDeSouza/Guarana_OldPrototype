@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityEngine.Assertions;
 using UnityEngine;
+using TMPro;
 
 using System.Collections.Generic;
 using System.Collections;
@@ -12,59 +13,76 @@ using System;
 public class DescriptorLoader : object{
 
 	// NCL nodes as Dict<id,class>
-	public Dictionary<string,Region> region = new Dictionary<string,Region>();
-	public Dictionary<string,Media> media = new Dictionary<string,Media>();
+	public Dictionary<string,Region> region { get; private set; }
+	public Dictionary<string,Media> media { get; private set; }
 
-	// Start is called before the first frame update
-	public void Load(){
+	public DescriptorLoader(TextAsset docLocation, string TMP_PATH, TextMeshPro debug){
+
+		this.region = new Dictionary<string,Region>();
+		this.media = new Dictionary<string,Media>();
 
 		// ################################
 		// Primeiro lê-se o NCL
 
 		XmlDocument ncl = new XmlDocument();
 
+debug.text += "\n\tDescLoader - 01";
+
 		try{
 
-			ncl.Load(Application.dataPath + "/Internal/Dependencies/RealidadeFeliz/Scripts/amostra.ncl");
+			if (docLocation == null)
+			{
+				debug.text += "\n\tdocLocation eh nulo!!! ";
+			}
+
+			ncl.LoadXml(docLocation.text);
+
+debug.text += "\n\tDescLoader - 02";
 
 		}catch( Exception e){
 
-			Debug.Log("NCL file could not be read");
+debug.text += "\n\tNCL file could not be read: " + e;
 			// TODO - quit application with log
 		}
 
-		Debug.Log("Arquivo NCL foi lido com sucesso!"); // ######## DEGUB ########
+
+//		Debug.Log("Arquivo NCL foi lido com sucesso!"); // ######## DEGUB ########
 
 		try{
 
 			foreach( XmlNode regionNode in ncl.GetElementsByTagName("region")){
 
 				var aux = new Region(regionNode);
-				this.region.Add(aux.GetID(),aux);
+				this.region.Add(aux.id,aux);
 			}
+
+debug.text += "\n\tDescLoader - 03";
 
 		}catch( Exception e){
 
-			Debug.Log("Exceção capturada: " + e);
+debug.text += "\n\tExceção capturada: " + e;
 			// TODO - quit application with log
 		}
 
-		Debug.Log("Li todos as tags 'region'");
+//		Debug.Log("Li todos as tags 'region'");
 
 		try{
 
 			foreach( XmlNode mediaNode in ncl.GetElementsByTagName("media")){
 
-				var aux = new Media(mediaNode,this.region);
-				this.media.Add(aux.GetID(),aux);
+				var aux = new Media(mediaNode,this.region,TMP_PATH);
+				this.media.Add(aux.id,aux);
 			}
+
+debug.text += "\n\tDescLoader - 04";
 
 		}catch( Exception e){
 
-			Debug.Log("Exceção capturada: " + e);
+debug.text += "\n\tExceção capturada: " + e;
 			// TODO - quit application with log
 		}
 
-		Debug.Log("Li todos as tags 'media'");
+debug.text += "\n\tLi todas as midias?";
+//		Debug.Log("Li todos as tags 'media'");
 	}
 }
