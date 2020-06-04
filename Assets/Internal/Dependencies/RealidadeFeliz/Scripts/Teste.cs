@@ -90,9 +90,9 @@ public class Teste : MonoBehaviour{
 		// ################################################################
 		// Faz download das médias
 
-		foreach( KeyValuePair<string,Media> kvp in parsedNCL.media){
+		foreach( KeyValuePair<string,Media> idMediaPairs in parsedNCL.media){
 
-			Region region = kvp.Value.defaultRegion;
+			Region region = idMediaPairs.Value.defaultRegion;
 
 //this.debugTextBox.text += "\n\tEm foreach 01: 00";
 
@@ -101,7 +101,7 @@ public class Teste : MonoBehaviour{
 
 //this.debugTextBox.text += "\n\tEm foreach 01: 01";
 
-				string fileName = Path.GetFileName(kvp.Value.src);
+				string fileName = Path.GetFileName(idMediaPairs.Value.src);
 				string URL = string.Format("{0}/{1}",@"http://happyserver.lan/shared",fileName);
 
 				yield return DownloadURL(URL,string.Format("{0}/{1}",this.cachedVideosPath,fileName));
@@ -113,9 +113,9 @@ public class Teste : MonoBehaviour{
 		// ################################################################
 		// Cria as telas para exibir as mídias
 
-		foreach( KeyValuePair<string,Media> kvp in parsedNCL.media){
+		foreach( KeyValuePair<string,Media> idMediaPairs in parsedNCL.media){
 
-			Region region = kvp.Value.defaultRegion;
+			Region region = idMediaPairs.Value.defaultRegion;
 
 //this.debugTextBox.text += "\n\tEm foreach 02: 00";
 
@@ -127,27 +127,27 @@ public class Teste : MonoBehaviour{
 				// ################################
 				// Cria uma screen para exibí-la
 
-				var temp = (GameObject) Instantiate(telaPrefab);
-				temp.name = "VideoScreen teste";
+				var tempScreen = (GameObject) Instantiate(telaPrefab);
+				tempScreen.name = "VideoScreen teste";
 
-				//temp.transform.localRotation = Quaternion.Euler(0.0f,0.0f,0.0f);
-				temp.transform.localPosition = region.Transform.position;
-				temp.transform.localScale = region.Transform.scale;
+				//tempScreen.transform.localRotation = Quaternion.Euler(0.0f,0.0f,0.0f);
+				tempScreen.transform.localPosition = region.Transform.position;
+				tempScreen.transform.localScale = region.Transform.scale;
 
-				var screen = temp.GetComponent<VideoScreen>();
+				var screen = tempScreen.GetComponent<VideoScreen>();
 
 				/*#if UNITY_EDITOR
 						Assert.IsNotNull(screen);
 				#endif*/
 
 				try{
-					if(File.Exists(kvp.Value.src.Substring(8))){
-						screen.SetVideoURL(kvp.Value.src);
+					if(File.Exists(idMediaPairs.Value.src.Substring(8))){
+						screen.SetVideoURL(idMediaPairs.Value.src);
 						//screen.SetVideoURL("http://happyserver.lan/shared/eggman.mp4");
-//this.debugTextBox.text += "\n\t Achei o arquivo" + kvp.Value.src + " !! =D";
+//this.debugTextBox.text += "\n\t Achei o arquivo" + idMediaPairs.Value.src + " !! =D";
 					}
 					else{
-//this.debugTextBox.text += "\n\t Não achei o arquivo" + kvp.Value.src + " !! ='(";
+//this.debugTextBox.text += "\n\t Não achei o arquivo" + idMediaPairs.Value.src + " !! ='(";
 					}
 
 				}catch( Exception e){
