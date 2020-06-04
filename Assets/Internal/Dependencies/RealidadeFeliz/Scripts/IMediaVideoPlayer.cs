@@ -1,11 +1,11 @@
 ﻿// Simples interface do que um tocador de vídeo deve ter
 
-public interface VPlayer{
+public interface IMediaVideoPlayer{
 
 	void SetResolution( int x, int y);
 	void SetVideoURL( string url);
 	void SetDefaultVideoClip();
-	void Pausar();
-	void Parar();
-	void Tocar();
+	void Pause();
+	void Stop();
+	void Play();
 }

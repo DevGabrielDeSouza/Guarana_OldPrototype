@@ -793,8 +793,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7d5eb5b0b2ffe47a4c6ae207645a79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textAsset: {fileID: 4900000, guid: 737ac7ecc88304d4e95154a184d09a85, type: 3}
-  _Tela_: {fileID: 8622696690152403363, guid: 29a3f77cd2dd384478b776d6f442f72a, type: 3}
+  descriptorFile: {fileID: 4900000, guid: 737ac7ecc88304d4e95154a184d09a85, type: 3}
+  telaPrefab: {fileID: 8622696690152403363, guid: 29a3f77cd2dd384478b776d6f442f72a,
+    type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
