@@ -4,7 +4,7 @@ using UnityEngine.Video;
 using UnityEngine;
 using System;
 
-public class Tela : MonoBehaviour, VPlayer{
+public class VideoScreen : MonoBehaviour, IMediaVideoPlayer{
 
 	private static readonly Vector3 origin = new Vector3(0,0,0);
 
@@ -32,18 +32,21 @@ public class Tela : MonoBehaviour, VPlayer{
 		this.player.loopPointReached += delegate( UnityEngine.Video.VideoPlayer foo){ StartCoroutine(Fade()); Debug.Log("Vídeo terminado!"); };
 	}
 
-	public void SetResolution( int x, int y){
+	public void SetResolution( int widthResolution, int heightResolution){
 
-		Assert.IsNotNull(player);
+		/*#if UNITY_EDITOR
+			Assert.IsNotNull(player);
+		#endif*/
+		
 
 		if( player.targetTexture != null ){
 
-			player.targetTexture.height = y;
-			player.targetTexture.width = x;
+			player.targetTexture.height = heightResolution;
+			player.targetTexture.width = widthResolution;
 		}
 
-		height = x;
-		width = y;
+		height = widthResolution;
+		width = heightResolution;
 	}
 
 	public void SetVideoURL( string url){
@@ -93,17 +96,17 @@ public class Tela : MonoBehaviour, VPlayer{
 		Destroy(gameObject);
 	}
 
-	public void Pausar(){
+	public void Pause(){
 
 		player.Pause();
 	}
 
-	public void Parar(){
+	public void Stop(){
 
 		player.Stop();
 	}
 
-	public void Tocar(){
+	public void Play(){
 
 		player.Play();
 	}

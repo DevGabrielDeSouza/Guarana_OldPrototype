@@ -8,33 +8,34 @@ using System;
 
 public class Media : object{
 
-	public Region defaultReg { get; private set; }
+	public Region defaultRegion { get; private set; }
 	public string src { get; private set; }
 	public string id { get; private set; }
 
-	public Media( XmlNode node, Dictionary<string,Region> region, string TMP_PATH){
+	public Media( XmlNode node, Dictionary<string,Region> region, string sourcePath){
+		/*#if UNITY_EDITOR
+			Assert.IsNotNull(node);
+			Assert.IsNotNull(region);
+		#endif	*/
 
-		Assert.IsNotNull(node);
-		Assert.IsNotNull(region);
+		foreach( XmlAttribute nodeAttribute in node.Attributes){
 
-		foreach( XmlAttribute attr in node.Attributes){
-
-			switch( attr.Name ){
+			switch( nodeAttribute.Name ){
 
 				case "id":
-					this.id = attr.Value;
+					this.id = nodeAttribute.Value;
 					break;
 
 				case "src":
-					this.src = string.Format("{0}/{1}",TMP_PATH,attr.Value);
+					this.src = string.Format("{0}/{1}", sourcePath, nodeAttribute.Value);
 					break;
 
 				case "region":
-					this.defaultReg = region[attr.Value];
+					this.defaultRegion = region[nodeAttribute.Value];
 					break;
 
 				default:
-					throw new Exception(string.Format("Invalid attribute '{0}'",attr.Name));
+					throw new Exception(string.Format("Invalid attribute '{0}'", nodeAttribute.Name));
 			}
 		}
 	}

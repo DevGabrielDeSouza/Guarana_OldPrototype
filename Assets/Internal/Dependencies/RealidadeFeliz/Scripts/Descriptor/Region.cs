@@ -9,51 +9,53 @@ public class Region : object{
 	private static readonly float MAXIMUM_HEIGHT = 120.0f;
 	private static readonly float MAXIMUM_WIDTH = 120.0f;
 
-	public sealed class Transform{
+	public sealed class RegionTransform{
 
 		public Vector3 position;
 		public Vector3 scale;
 
-		public Transform( Region.Transform other){
-
+		public RegionTransform( Region.RegionTransform other){
+		/*#if UNITY_EDITOR
 			Assert.IsNotNull(other);
+		#endif*/
 
 			this.position = new Vector3(other.position.x,other.position.y,other.position.z);
 			this.scale = new Vector3(other.scale.x,other.scale.y,other.scale.z);
 		}
 
-		public Transform( Vector3 position, Vector3 scale){
+		public RegionTransform( Vector3 _position, Vector3 _scale){
 
-			this.position = position;
-			this.scale = scale;
+			this.position = _position;
+			this.scale = _scale;
 		}
 	}
 
-	private Region.Transform _trans = null;
+	private Region.RegionTransform regionTransform = null;
 	public string id { get; private set; }
 
 	// Returns null in case it's a 360º area
-	public Region.Transform trans{
+	public Region.RegionTransform Transform{
 
 		get{
 
-			return this._trans == null ? null : new Region.Transform(this._trans);
+			return this.regionTransform == null ? null : new Region.RegionTransform(this.regionTransform);
 		}
 
 		private set{
 
-			this._trans = value;
+			this.regionTransform = value;
 		}
 	}
 
 	public bool IsTotal(){
 
-		return this._trans == null;
+		return this.regionTransform == null;
 	}
 
 	public Region( XmlNode node){
-
-		Assert.IsNotNull(node);
+		/*#if UNITY_EDITOR
+			Assert.IsNotNull(node);
+		#endif*/
 		//Debug.Log("Printando nó: " + node); // ######## Debug ########
 
 		// Local variables
@@ -149,20 +151,20 @@ public class Region : object{
 			zIndex = zIndex == -1 ? 0 : zIndex;
 
 			// Makes the zIndex worth
-			float r = radius - 0.001f * zIndex;
+			float radiusCompensated = radius - 0.001f * zIndex;
 
 			// Acquires the screen center position
-			Vector3 pos = PolarCartesiano(r,polar,azimuthal);
+			Vector3 screenCenterPosition = PolarToCartesian(radiusCompensated,polar,azimuthal);
 
 			// Calculates the scale in such a way the FOV area taken independs on the distance
-			Vector3 scl = new Vector3(
+			Vector3 scaleWithFOV = new Vector3(
 
-				Vector3.Distance(pos,PolarCartesiano(r,polar,azimuthal+width)) * 1.4142f,	// Essa constante só deve funcionar na câmera default do editor
-				Vector3.Distance(pos,PolarCartesiano(r,polar+height,azimuthal)) * 1.4142f,	// Essa constante deve ser testada no Óculus
+				Vector3.Distance(screenCenterPosition,PolarToCartesian(radiusCompensated,polar,azimuthal+width)) * 1.4142f,	// Essa constante só deve funcionar na câmera default do editor
+				Vector3.Distance(screenCenterPosition,PolarToCartesian(radiusCompensated,polar+height,azimuthal)) * 1.4142f,	// Essa constante deve ser testada no Óculus
 				1
 			);
 
-			this.trans = new Region.Transform(pos,scl);
+			this.Transform = new Region.RegionTransform(screenCenterPosition,scaleWithFOV);
 
 		// This is an error
 		}else{
@@ -171,7 +173,7 @@ public class Region : object{
 		}
 	}
 
-	private static Vector3 PolarCartesiano( float radius, float polar, float azimuthal){
+	private static Vector3 PolarToCartesian( float radius, float polar, float azimuthal){
 
 		float y = radius * Mathf.Sin((90-polar)*Mathf.PI/180);
 		float H = radius * Mathf.Cos((90-polar)*Mathf.PI/180);
